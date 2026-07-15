@@ -8,10 +8,6 @@
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* user-facing "pause motion" state (WCAG 2.2.2) — read by the video
-     observer, toggled at the bottom of this file */
-  var motionPaused = false;
-
   /* ---------- Smooth anchor scrolling ---------- */
 
   var anchors = document.querySelectorAll('a[href^="#"]:not([href="#"])');
@@ -87,10 +83,8 @@
         var video = entry.target;
         if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
           video.dataset.inview = 'true';
-          if (!motionPaused) {
-            var p = video.play();
-            if (p && p.catch) p.catch(function () { /* autoplay blocked: poster stays */ });
-          }
+          var p = video.play();
+          if (p && p.catch) p.catch(function () { /* autoplay blocked: poster stays */ });
         } else if (!entry.isIntersecting) {
           delete video.dataset.inview;
           video.pause();
@@ -98,33 +92,6 @@
       });
     }, { threshold: [0, 0.3, 0.6] });
     videos.forEach(function (v) { videoObserver.observe(v); });
-  }
-
-  /* ---------- Pause-motion toggle (WCAG 2.2.2) ---------- */
-
-  var motionToggle = document.getElementById('motion-toggle');
-  if (motionToggle) {
-    if (reduceMotion) {
-      /* motion is already off system-wide — the control is redundant */
-      motionToggle.hidden = true;
-    } else {
-      motionToggle.addEventListener('click', function () {
-        motionPaused = !motionPaused;
-        motionToggle.setAttribute('aria-pressed', String(motionPaused));
-        motionToggle.textContent = motionPaused ? 'Play motion' : 'Pause motion';
-        document.documentElement.classList.toggle('motion-paused', motionPaused);
-        if (motionPaused) {
-          videos.forEach(function (v) { v.pause(); });
-        } else {
-          videos.forEach(function (v) {
-            if (v.dataset.inview || !('IntersectionObserver' in window)) {
-              var p = v.play();
-              if (p && p.catch) p.catch(function () { /* poster stays */ });
-            }
-          });
-        }
-      });
-    }
   }
 
 })();

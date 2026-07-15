@@ -214,35 +214,6 @@ img, video {
   to   { transform: translateX(-50%); }
 }
 
-.ticker-pause {
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: 0.6875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--ink-60);
-  background: none;
-  border: 0;
-  border-left: 1px solid var(--hairline);
-  padding: 0 20px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.ticker-pause:hover {
-  color: var(--ink);
-}
-
-@media (max-width: 440px) {
-  .ticker-pause {
-    padding: 0 14px;
-  }
-}
-
-/* set by the pause-motion toggle in main.js */
-.motion-paused .ticker-track {
-  animation-play-state: paused;
-}
 
 /* ---------- Hero: editorial split spread ---------- */
 

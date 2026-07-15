@@ -1,0 +1,6 @@
+# local tooling — never deploy to GitHub Pages
+.claude/
+.DS_Store
+
+# dormant chat feature (kept locally for a future real-AI version; not shipped)
+js/chat.js
